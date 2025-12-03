@@ -1,0 +1,38 @@
+services:
+  user-db:
+    image: mysql:8
+    container_name: user-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: service-users
+    ports:
+      - "3307:3306"
+    volumes:
+      - user_db_data:/var/lib/mysql
+
+  car-db:
+    image: mysql:8
+    container_name: car-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: service-cars
+    ports:
+      - "3308:3306"
+    volumes:
+      - car_db_data:/var/lib/mysql
+
+  motorbike-db:
+    image: mysql:8
+    container_name: motorbike-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: service-motorbikes
+    ports:
+      - "3309:3306"
+    volumes:
+      - motorbike_db_data:/var/lib/mysql
+
+volumes:
+  user_db_data:
+  car_db_data:
+  motorbike_db_data:
