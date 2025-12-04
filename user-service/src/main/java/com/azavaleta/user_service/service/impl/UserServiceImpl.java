@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<Car> getCarsByUserId(Integer userId) {
-        List<Car> cars = restTemplate.exchange("http://localhost:8081/api/v1/cars/users/" + userId,
+        List<Car> cars = restTemplate.exchange("http://car-service/api/v1/cars/users/" + userId,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Car>>() {
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<Motorbike> getMotorbikesByUserId(Integer userId) {
-        List<Motorbike> motorbikes = restTemplate.exchange("http://localhost:8082/api/v1/motorbikes/users/" + userId,
+        List<Motorbike> motorbikes = restTemplate.exchange("http://motorbike-service/api/v1/motorbikes/users/" + userId,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Motorbike>>() {
