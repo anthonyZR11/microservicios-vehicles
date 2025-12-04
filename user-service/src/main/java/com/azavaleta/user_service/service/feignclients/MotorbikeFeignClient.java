@@ -12,7 +12,6 @@ import java.util.List;
 
 @FeignClient(
         name = "Motorbike-service",
-        url = "http://localhost:8082",
         path = "/api/v1/motorbikes"
 )
 public interface MotorbikeFeignClient {

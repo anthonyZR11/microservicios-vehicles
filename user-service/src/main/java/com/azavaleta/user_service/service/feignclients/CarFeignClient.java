@@ -8,7 +8,6 @@ import java.util.List;
 
 @FeignClient(
         name = "car-service",
-        url = "http://localhost:8081",
         path = "/api/v1/cars"
 )
 public interface  CarFeignClient {
