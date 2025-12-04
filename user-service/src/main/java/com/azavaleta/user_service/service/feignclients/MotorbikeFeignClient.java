@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 @FeignClient(
-        name = "Motorbike-service",
+        name = "motorbike-service",
         path = "/api/v1/motorbikes"
 )
 public interface MotorbikeFeignClient {
