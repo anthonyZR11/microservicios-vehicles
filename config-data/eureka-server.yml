@@ -1,13 +1,11 @@
 server:
   port: 8761
 
-spring:
-  application:
-    name: eureka-server
-
 eureka:
-    client:
-      fetch-registry: false #esto es para que no se autoregistre el mismo eureka
-      register-with-eureka: false
-      service-url:
-        default-zone: "http://${eureka.instance.hostname}:${server.port}/eureka/"
+  instance:
+    hostname: localhost
+  client:
+    fetch-registry: false #esto es para que no se autoregistre el mismo eureka
+    register-with-eureka: false
+    service-url:
+      default-zone: "http://${eureka.instance.hostname}:${server.port}/eureka/"
