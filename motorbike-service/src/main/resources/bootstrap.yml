@@ -1,6 +1,6 @@
 spring:
   application:
-    name: motorbikes-service
+    name: motorbike-service
   cloud:
     config:
       enabled: true
