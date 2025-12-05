@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(
-        name = "motorbike-service",
-        path = "/api/v1/motorbikes"
-)
+@FeignClient(name = "motorbike-service")
 public interface MotorbikeFeignClient {
     @PostMapping
     Motorbike createMotorbike(@RequestBody Motorbike request);
