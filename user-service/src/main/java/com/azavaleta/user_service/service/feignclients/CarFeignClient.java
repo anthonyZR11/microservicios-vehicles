@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "car-service")
+@FeignClient(
+        name = "car-service",
+        path = "/api/v1/cars"
+)
 public interface  CarFeignClient {
 
     @PostMapping
