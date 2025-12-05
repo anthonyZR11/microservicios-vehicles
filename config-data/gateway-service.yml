@@ -27,5 +27,4 @@ spring:
         - id: motorbike-service
           uri: lb://motorbike-service
           predicates:
-            - Path=/api/v1/
-            - motorbikes/**
+            - Path=/api/v1/motorbikes/**
