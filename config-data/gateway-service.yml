@@ -6,8 +6,8 @@ eureka:
     register-with-eureka: true
     service-url:
       default-zone: http://localhost:8761/eureka
-    instance:
-      hostname: localhost
+  instance:
+    hostname: localhost
 
 spring:
   cloud:
@@ -28,3 +28,9 @@ spring:
           uri: lb://motorbike-service
           predicates:
             - Path=/api/v1/motorbikes/**
+
+# Para debugging
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.loadbalancer: DEBUG
