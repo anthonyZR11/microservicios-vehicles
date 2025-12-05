@@ -4,7 +4,9 @@ import com.azavaleta.user_service.entity.User;
 import com.azavaleta.user_service.model.Car;
 import com.azavaleta.user_service.model.Motorbike;
 import com.azavaleta.user_service.service.UserService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +55,7 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
+    @CircuitBreaker(name = "carsCB", fallbackMethod = "fallbackGetCars")
     @GetMapping("/cars/{userId}")
     public ResponseEntity<List<Car>> getCarByUserId(@PathVariable Integer userId) {
         List<Car> carsByUserId = userService.getCarsByUserId(userId);
@@ -61,6 +64,15 @@ public class UserController {
         return ResponseEntity.ok(carsByUserId);
     }
 
+    @CircuitBreaker(name = "carsCB", fallbackMethod = "fallbackCreateCars")
+    @PostMapping("/cars/{userId}")
+    public ResponseEntity<Car> createCarToUser(@PathVariable Integer userId, @RequestBody Car request) {
+        Car newCarToUser = userService.createCarToUser(userId, request);
+
+        return ResponseEntity.ok(newCarToUser);
+    }
+
+    @CircuitBreaker(name = "motorbikesCB", fallbackMethod = "fallbackGetMotorbikes")
     @GetMapping("/motorbikes/{userId}")
     public ResponseEntity<List<Motorbike>> getMotorbikesByUserId(@PathVariable Integer userId) {
         List<Motorbike> motorbikeByUserId = userService.getMotorbikesByUserId(userId);
@@ -69,13 +81,7 @@ public class UserController {
         return ResponseEntity.ok(motorbikeByUserId);
     }
 
-    @PostMapping("/cars/{userId}")
-    public ResponseEntity<Car> createCarToUser(@PathVariable Integer userId, @RequestBody Car request) {
-        Car newCarToUser = userService.createCarToUser(userId, request);
-
-        return ResponseEntity.ok(newCarToUser);
-    }
-
+    @CircuitBreaker(name = "motorbikesCB", fallbackMethod = "fallbackCreateMotorbikes")
     @PostMapping("/motorbikes/{userId}")
     public ResponseEntity<Motorbike> createMotorbikeToUser(@PathVariable Integer userId, @RequestBody Motorbike request) {
         Motorbike newMotorbikeToUser = userService.createMotorbikeToUser(userId, request);
@@ -83,11 +89,32 @@ public class UserController {
         return ResponseEntity.ok(newMotorbikeToUser);
     }
 
+    @CircuitBreaker(name = "vehiclesCB", fallbackMethod = "fallbackGetVehicles")
     @GetMapping("/{userId}/all/vehicles")
     public ResponseEntity<Map<String, Object>> getAllUserVehicles(@PathVariable Integer userId) {
         Map<String, Object> getUserVehicles = userService.getAllUserVehicles(userId);
 
         if(getUserVehicles == null) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(getUserVehicles);
+    }
+
+    private ResponseEntity<List<Car>> fallbackGetCars(@PathVariable Integer userId, RuntimeException runtimeException) {
+        return new ResponseEntity("No se pueden cargar los carros para el usuario " + userId + " en este momento", HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    private ResponseEntity<Car> fallbackCreateCars(@PathVariable Integer userId, @RequestBody Car request, RuntimeException runtimeException) {
+        return new ResponseEntity("No se pueden crear carros para el usuario " + userId + " en este momento", HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    private ResponseEntity<List<Car>> fallbackGetMotorbikes(@PathVariable Integer userId, RuntimeException runtimeException) {
+        return new ResponseEntity("No se pueden cargar las motos para el usuario " + userId + " en este momento", HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    private ResponseEntity<Motorbike> fallbackCreateMotorbikes(@PathVariable Integer userId, @RequestBody Motorbike request, RuntimeException runtimeException) {
+        return new ResponseEntity("No se pueden crear motos para el usuario " + userId + " en este momento", HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    public ResponseEntity<Map<String, Object>> fallbackGetVehicles(@PathVariable Integer userId) {
+        return new ResponseEntity("No se pueden cargar los vehiculos para el usuario " + userId + " en este momento", HttpStatus.SERVICE_UNAVAILABLE);
     }
 }
