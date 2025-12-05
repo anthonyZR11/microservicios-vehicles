@@ -114,7 +114,7 @@ public class UserController {
         return new ResponseEntity("No se pueden crear motos para el usuario " + userId + " en este momento", HttpStatus.SERVICE_UNAVAILABLE);
     }
 
-    public ResponseEntity<Map<String, Object>> fallbackGetVehicles(@PathVariable Integer userId) {
+    public ResponseEntity<Map<String, Object>> fallbackGetVehicles(@PathVariable Integer userId, RuntimeException runtimeException) {
         return new ResponseEntity("No se pueden cargar los vehiculos para el usuario " + userId + " en este momento", HttpStatus.SERVICE_UNAVAILABLE);
     }
 }
